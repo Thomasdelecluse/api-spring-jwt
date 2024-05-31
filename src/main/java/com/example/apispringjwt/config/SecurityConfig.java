@@ -12,27 +12,32 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Value("${application.jwt.key}")
+    private String jwtKey;
 
-        @Bean
-        public JwtDecoder jwtDecoder(@Value("${application.jwt.key}") String jwtKey) {
-            SecretKeySpec secretKey = new SecretKeySpec(jwtKey.getBytes(), 0, jwtKey.getBytes().length, "RSA");
-            return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-        }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        Key key = new SecretKeySpec(jwtKey.getBytes(), "AES");
+        return NimbusJwtDecoder.withSecretKey((SecretKey) key).macAlgorithm(MacAlgorithm.HS256).build();
+    }
 
-        @Bean
-        public JwtEncoder jwtEncoder(@Value("${application.jwt.key}") String jwtKey) {
-            return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
-        }
+    @Bean
+    public JwtEncoder jwtEncoder() {
+        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
+    }
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,7 +45,7 @@ public class SecurityConfig {
                     .csrf(AbstractHttpConfigurer::disable)
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .authorizeHttpRequests(authorize -> authorize
-                            .requestMatchers("/api/auth/register", "/api/auth/login", "/api/pictures/{id}", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                            .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "/h2-console/login.do").permitAll()
                             .anyRequest().authenticated())
                     .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                     .build();
