@@ -1,11 +1,13 @@
 package com.example.apispringjwt.service.impl;
 
-import com.example.apispringjwt.dto.auth.UserDTO;
+import com.example.apispringjwt.dto.receive.UserDTO;
+import com.example.apispringjwt.exeption.ResponseEntityException;
 import com.example.apispringjwt.model.User;
 import com.example.apispringjwt.repository.IUserRepository;
 import com.example.apispringjwt.service.IAuthService;
 import com.example.apispringjwt.service.IJwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,10 @@ public class AuthService implements IAuthService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public String login(UserDTO login) throws Exception {
+    public String login(UserDTO login){
         User loggedUser = userRepository.findByEmail(login.email())
                 .filter(user -> passwordEncoder.matches(login.password(), user.getPassword()))
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseEntityException(HttpStatus.NO_CONTENT, "user not found"));
 
         return jwtService.generateToken(new UsernamePasswordAuthenticationToken(
                 loggedUser, null, loggedUser.getAuthorities()
@@ -32,10 +34,9 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public String register(UserDTO login) throws Exception {
-        try{
+    public String register(UserDTO login) {
             if (login == null || login.email() == null || login.password() == null) {
-                throw new IllegalArgumentException();
+                throw new ResponseEntityException(HttpStatus.NO_CONTENT, "login null");
             }
 
             User user = new User();
@@ -46,9 +47,5 @@ public class AuthService implements IAuthService {
             return jwtService.generateToken(new UsernamePasswordAuthenticationToken(
                     user.getEmail(), null, user.getAuthorities()
             ));
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new IllegalAccessException();
-        }
     }
 }

@@ -1,11 +1,9 @@
 package com.example.apispringjwt.controller;
 
-import com.example.apispringjwt.dto.auth.TokenDTO;
-import com.example.apispringjwt.dto.auth.UserDTO;
+import com.example.apispringjwt.dto.receive.UserDTO;
+import com.example.apispringjwt.dto.send.TokenDTO;
 import com.example.apispringjwt.service.IAuthService;
-import com.example.apispringjwt.service.impl.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,25 +17,13 @@ public class AuthController {
     IAuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody UserDTO user) {
-        try {
-            return ResponseEntity.ok(new TokenDTO(authService.login(user)));
-        }
-        catch (Exception e ){
-            return (ResponseEntity<TokenDTO>) ResponseEntity.status(HttpStatus.UNAUTHORIZED);
-        }
+    private ResponseEntity<TokenDTO> postLogin(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(new TokenDTO(authService.login(user)));
+
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TokenDTO> register(@RequestBody UserDTO user) {
-        try {
-            return ResponseEntity.ok(new TokenDTO(authService.register(user)));
-        }
-        catch (IllegalAccessException e ){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        catch (Exception e ){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    private ResponseEntity<TokenDTO> postRegister(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(new TokenDTO(authService.register(user)));
     }
 }
