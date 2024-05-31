@@ -1,4 +1,4 @@
-package com.example.apispringjwt.dto.receive;
+package com.example.apispringjwt.dto.request;
 
 public record UserDTO(
         String email,
