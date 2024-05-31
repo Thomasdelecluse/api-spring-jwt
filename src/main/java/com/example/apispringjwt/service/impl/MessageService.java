@@ -1,10 +1,8 @@
 package com.example.apispringjwt.service.impl;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequestMapping("/api/message")
+@Service
 public class MessageService {
 
 
