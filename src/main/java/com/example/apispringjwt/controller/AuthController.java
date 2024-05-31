@@ -1,7 +1,7 @@
 package com.example.apispringjwt.controller;
 
-import com.example.apispringjwt.dto.receive.UserDTO;
-import com.example.apispringjwt.dto.send.TokenDTO;
+import com.example.apispringjwt.dto.request.UserDTO;
+import com.example.apispringjwt.dto.response.TokenDTO;
 import com.example.apispringjwt.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

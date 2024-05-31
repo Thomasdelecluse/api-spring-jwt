@@ -1,6 +1,6 @@
 package com.example.apispringjwt.exeption;
 
-import com.example.apispringjwt.dto.send.ResponseExceptionDTO;
+import com.example.apispringjwt.dto.response.ResponseExceptionDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
