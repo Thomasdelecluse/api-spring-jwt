@@ -1,13 +1,11 @@
 package com.example.apispringjwt.controller;
 
-import com.example.apispringjwt.dto.send.MessageDTO;
+import com.example.apispringjwt.dto.request.CreateMessageDTO;
+import com.example.apispringjwt.dto.response.MessageDTO;
 import com.example.apispringjwt.service.impl.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/message")
@@ -17,21 +15,23 @@ public class MessageController {
     MessageService messageService;
 
     @PostMapping
-    private void postMessage() {
-
-    }
-
-    ;
+    private ResponseEntity<?> postSentMessage(@RequestBody CreateMessageDTO createMessageDTO) {
+        messageService.saveMessage(createMessageDTO);
+        return ResponseEntity.ok().build();
+    };
 
     @GetMapping
-    private void getAllMessage() {
-
-    }
-
-    ;
+    private ResponseEntity<MessageDTO> getAllMessage() {
+        return ResponseEntity.ok(new MessageDTO(messageService.getAllMessage()));
+    };
 
     @GetMapping("/sent")
-    private ResponseEntity<MessageDTO> getMessageByEmail() {
+    private ResponseEntity<MessageDTO> getMessageSentByEmail() {
         return ResponseEntity.ok(new MessageDTO(messageService.getSentMessageByUser()));
+    }
+
+    @GetMapping("/receive")
+    private ResponseEntity<MessageDTO> getMessageReceiveByEmail() {
+        return ResponseEntity.ok(new MessageDTO(messageService.getReceiveMessageByUser()));
     }
 }

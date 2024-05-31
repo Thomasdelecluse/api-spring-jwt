@@ -10,4 +10,6 @@ import java.util.List;
 public interface IMessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findByAuthor(String author);
 
+    List<Message> findByDestination(String destination);
+
 }
