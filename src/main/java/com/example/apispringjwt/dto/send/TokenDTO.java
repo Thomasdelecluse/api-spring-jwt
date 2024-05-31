@@ -1,4 +1,4 @@
-package com.example.apispringjwt.dto.auth;
+package com.example.apispringjwt.dto.send;
 
 public record TokenDTO (
         String token
