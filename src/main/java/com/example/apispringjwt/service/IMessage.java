@@ -8,7 +8,6 @@ import java.util.List;
 public interface IMessage {
     void saveMessage(CreateMessageDTO createMessageDTO);
     List<Message> getAllMessage();
-    List<Message> getSentMessageByUser();
+    List<Message> getConversationWithContact(String email);
 
-    List<Message> getReceiveMessageByUser();
 }

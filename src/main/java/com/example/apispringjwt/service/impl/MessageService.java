@@ -11,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.apispringjwt.service.impl.AuthService.getUserNameConnected;
 
@@ -22,28 +24,24 @@ public class MessageService implements IMessage {
     private IMessageRepository messageRepository;
 
     @Override
-    public List<Message> getSentMessageByUser(){
-        String userEmail = getUserNameConnected();
-        List<Message> messagesReceive = messageRepository.findByAuthor(userEmail);
-            if(messagesReceive.isEmpty()){
-                throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no message found");
-            }
-            return messagesReceive;
+    public List<Message> getConversationWithContact(String email) {
+        String userEmailConnected = getUserNameConnected();
+        List<Message> allMessagesReceiveByContact = messageRepository.findByAuthorAndDestination(email, userEmailConnected);
+        List<Message> allMessagesSentToContact = messageRepository.findByAuthorAndDestination(userEmailConnected, email);
+        List<Message> allMessages = new ArrayList<>();
+        allMessages.addAll(allMessagesReceiveByContact);
+        allMessages.addAll(allMessagesSentToContact);
+        if (allMessages.isEmpty()) {
+            throw new ResponseEntityException(HttpStatus.NO_CONTENT, "No messages found");
+        }
+
+        return allMessages;
     }
 
-    @Override
-    public List<Message> getReceiveMessageByUser(){
-        String userEmail = getUserNameConnected();
-        List<Message> messagesSent = messageRepository.findByDestination(userEmail);
-        if(messagesSent.isEmpty()){
-            throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no message found");
-        }
-        return messagesSent;
-    }
 
     @Override
     public void saveMessage(CreateMessageDTO createMessageDTO) {
-        if(createMessageDTO == null || createMessageDTO.author() == null || createMessageDTO.message() == null){
+        if (createMessageDTO == null || createMessageDTO.author() == null || createMessageDTO.message() == null) {
             throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no content found in request");
         }
         Message messageToSave = new Message();
@@ -55,9 +53,9 @@ public class MessageService implements IMessage {
     }
 
     @Override
-    public List<Message> getAllMessage(){
+    public List<Message> getAllMessage() {
         List<Message> allMessages = messageRepository.findAll();
-        if(allMessages.isEmpty()){
+        if (allMessages.isEmpty()) {
             throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no messages found");
         }
         return allMessages;

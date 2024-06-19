@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/message")
 public class MessageController {
 
@@ -21,17 +22,12 @@ public class MessageController {
     };
 
     @GetMapping
-    private ResponseEntity<MessageDTO> getAllMessage() {
+    private ResponseEntity<MessageDTO> getAllMessages() {
         return ResponseEntity.ok(new MessageDTO(messageService.getAllMessage()));
     };
 
-    @GetMapping("/sent")
-    private ResponseEntity<MessageDTO> getMessageSentByEmail() {
-        return ResponseEntity.ok(new MessageDTO(messageService.getSentMessageByUser()));
-    }
-
-    @GetMapping("/receive")
-    private ResponseEntity<MessageDTO> getMessageReceiveByEmail() {
-        return ResponseEntity.ok(new MessageDTO(messageService.getReceiveMessageByUser()));
+    @GetMapping("/conversation")
+    private ResponseEntity<MessageDTO> getConversationWithContact(@RequestParam String email) {
+        return ResponseEntity.ok(new MessageDTO(messageService.getConversationWithContact(email)));
     }
 }
