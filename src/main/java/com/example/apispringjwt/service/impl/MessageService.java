@@ -23,6 +23,9 @@ public class MessageService implements IMessage {
 
     @Override
     public List<Message> getConversationWithContact(String email) {
+        if (email == null) {
+            throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no content for this conversation");
+        }
         String userEmailConnected = getUserNameConnected();
         List<Message> allMessagesReceiveByContact = messageRepository.findByAuthorAndDestination(email, userEmailConnected);
         List<Message> allMessagesSentToContact = messageRepository.findByAuthorAndDestination(userEmailConnected, email);
@@ -39,11 +42,11 @@ public class MessageService implements IMessage {
 
     @Override
     public void saveMessage(CreateMessageDTO createMessageDTO) {
-        if (createMessageDTO == null || createMessageDTO.author() == null || createMessageDTO.message() == null) {
+        if (createMessageDTO == null || createMessageDTO.message() == null) {
             throw new ResponseEntityException(HttpStatus.NO_CONTENT, "no content found in request");
         }
         Message messageToSave = new Message();
-        messageToSave.setAuthor(createMessageDTO.author());
+        messageToSave.setAuthor(getUserNameConnected());
         messageToSave.setMessage(createMessageDTO.message());
         messageToSave.setDestination(createMessageDTO.destination());
         messageToSave.setDate(LocalDateTime.now());
