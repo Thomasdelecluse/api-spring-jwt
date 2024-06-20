@@ -7,13 +7,11 @@ import com.example.apispringjwt.repository.IMessageRepository;
 import com.example.apispringjwt.service.IMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.example.apispringjwt.service.impl.AuthService.getUserNameConnected;
 
@@ -48,6 +46,7 @@ public class MessageService implements IMessage {
         messageToSave.setAuthor(createMessageDTO.author());
         messageToSave.setMessage(createMessageDTO.message());
         messageToSave.setDestination(createMessageDTO.destination());
+        messageToSave.setDate(LocalDateTime.now());
 
         messageRepository.save(messageToSave);
     }

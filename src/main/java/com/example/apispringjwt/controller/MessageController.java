@@ -21,12 +21,12 @@ public class MessageController {
         return ResponseEntity.ok().build();
     };
 
-    @GetMapping
+    @GetMapping("/allMessages")
     private ResponseEntity<MessageDTO> getAllMessages() {
         return ResponseEntity.ok(new MessageDTO(messageService.getAllMessage()));
     };
 
-    @GetMapping("/conversation")
+    @GetMapping
     private ResponseEntity<MessageDTO> getConversationWithContact(@RequestParam String email) {
         return ResponseEntity.ok(new MessageDTO(messageService.getConversationWithContact(email)));
     }
