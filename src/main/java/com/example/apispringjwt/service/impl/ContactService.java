@@ -30,7 +30,7 @@ public class ContactService implements IContactService {
             List<Contact> contacts = contactRepository.findByUserId_Id(userConnected.get().getId());
             if (!contacts.isEmpty()) {
                 return contacts.stream()
-                        .map(contact -> new ContactDTO(contact.getContactEmail(), contact.getTelephone()))
+                        .map(contact -> new ContactDTO(contact.getContactEmail(), contact.getTelephone(), contact.getContactName()))
                         .collect(Collectors.toList());
             } else {
                 throw new ResponseEntityException(HttpStatus.NO_CONTENT, "No contact found");

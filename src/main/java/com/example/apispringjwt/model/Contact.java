@@ -14,6 +14,8 @@ public class Contact {
     @Column(name = "contact_email", nullable = false)
     private String contactEmail;
 
+    @Column(name = "contactName", nullable = false)
+    private String contactName;
     @Column(name = "telephone", nullable = false)
     private String telephone;
 
@@ -47,5 +49,13 @@ public class Contact {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 }
