@@ -11,6 +11,6 @@ import java.util.List;
 public interface IMessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findByAuthor(String author);
 
-    @Query("SELECT m FROM Message m WHERE m.author = :author AND m.destination = :destination")
-    List<Message> findByAuthorAndDestination(@Param("author") String author, @Param("destination") String destination);
+    @Query("SELECT m FROM Message m WHERE m.author = :author AND m.userEmailDestination = :userEmailDestination")
+    List<Message> findByAuthorAndDestination(@Param("author") String author, @Param("userEmailDestination") String userEmailDestination);
 }

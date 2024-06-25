@@ -3,7 +3,6 @@ package com.example.apispringjwt.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "MESSAGE")
@@ -11,9 +10,8 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String author;
-    private String destination;
+    private String userEmailDestination;
     private String message;
     private LocalDateTime date;
 
@@ -33,12 +31,12 @@ public class Message {
         this.author = author;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getUserEmailDestination() {
+        return userEmailDestination;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setUserEmailDestination(String destination) {
+        this.userEmailDestination = destination;
     }
 
     public String getMessage() {

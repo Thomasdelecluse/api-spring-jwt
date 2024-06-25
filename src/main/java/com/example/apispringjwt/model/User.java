@@ -15,9 +15,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

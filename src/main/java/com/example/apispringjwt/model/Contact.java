@@ -7,6 +7,7 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User userId;
@@ -16,6 +17,7 @@ public class Contact {
 
     @Column(name = "contactName", nullable = false)
     private String contactName;
+
     @Column(name = "telephone", nullable = false)
     private String telephone;
 
@@ -58,4 +60,5 @@ public class Contact {
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
 }

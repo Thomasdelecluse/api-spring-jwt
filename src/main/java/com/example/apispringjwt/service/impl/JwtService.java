@@ -1,13 +1,12 @@
 package com.example.apispringjwt.service.impl;
 
+import com.example.apispringjwt.model.User;
+import com.example.apispringjwt.repository.IUserRepository;
 import com.example.apispringjwt.service.IJwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwsHeader;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,6 +17,12 @@ public class JwtService implements IJwtService {
 
         @Autowired
         private  JwtEncoder jwtEncoder;
+
+        @Autowired
+        private JwtDecoder jwtDecoder;
+
+        @Autowired
+        private IUserRepository userRepository;
 
         @Override
         public String generateToken(Authentication authentication) {
@@ -33,4 +38,14 @@ public class JwtService implements IJwtService {
             JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
             return jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
         }
+
+    @Override
+    public User decodeUserFromToken(String token) {
+        Jwt decode = jwtDecoder.decode(token);
+        String name = decode.getSubject();
+
+        return userRepository.findByEmail(name).orElseThrow();
+    }
+
+
 }
