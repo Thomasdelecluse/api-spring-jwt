@@ -1,6 +1,10 @@
 package com.example.apispringjwt.model;
 
+import com.example.apispringjwt.exeption.ResponseEntityException;
 import jakarta.persistence.*;
+import org.springframework.http.HttpStatus;
+
+import java.sql.Blob;
 
 @Entity
 public class Contact {
@@ -20,6 +24,23 @@ public class Contact {
 
     @Column(name = "telephone", nullable = false)
     private String telephone;
+
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
+
+    private static final int MAX_IMAGE_SIZE = 100 * 1024 * 1024;
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        if (image != null && image.length > MAX_IMAGE_SIZE) {
+            throw new ResponseEntityException(HttpStatus.INTERNAL_SERVER_ERROR, "Image is too large to fit into memory");
+        }
+        this.image = image;
+    }
 
     public int getId() {
         return id;

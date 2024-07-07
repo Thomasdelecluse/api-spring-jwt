@@ -9,4 +9,5 @@ import java.util.List;
 @Service
 public interface IContactService {
     List<ContactDTO> getContactOfUserConnected();
+    void updateContact(ContactDTO contactDTO);
 }
