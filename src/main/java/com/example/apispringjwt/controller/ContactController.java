@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/contact")
 public class ContactController {
     @Autowired
@@ -23,6 +23,12 @@ public class ContactController {
     @PutMapping()
     private ResponseEntity<?> updateContactOfUserConnected(@RequestBody ContactDTO contactDTO) {
         contactService.updateContact(contactDTO);
+        return ResponseEntity.ok().build();
+    };
+
+    @DeleteMapping("/{contactId}")
+    private ResponseEntity<?> deleteContactById(@PathVariable int contactId) {
+        contactService.deleteContactById(contactId);
         return ResponseEntity.ok().build();
     };
 

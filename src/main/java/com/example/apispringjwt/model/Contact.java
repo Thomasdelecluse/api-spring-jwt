@@ -4,8 +4,6 @@ import com.example.apispringjwt.exeption.ResponseEntityException;
 import jakarta.persistence.*;
 import org.springframework.http.HttpStatus;
 
-import java.sql.Blob;
-
 @Entity
 public class Contact {
     @Id

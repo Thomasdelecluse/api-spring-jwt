@@ -7,7 +7,6 @@ import com.example.apispringjwt.model.User;
 import com.example.apispringjwt.repository.IContactRepository;
 import com.example.apispringjwt.repository.IUserRepository;
 import com.example.apispringjwt.service.IContactService;
-import org.apache.logging.log4j.util.Base64Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -75,6 +74,15 @@ public class ContactService implements IContactService {
         } catch (Exception e) {
             throw new ResponseEntityException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while updating contact");
         }
+    }
+
+    @Override
+    public void deleteContactById(int contactId) {
+            if (contactRepository.existsById(contactId)) {
+                contactRepository.deleteById(contactId);
+                return;
+            }
+            throw new ResponseEntityException(HttpStatus.NO_CONTENT, "No contact found with your id");
     }
 
 }
