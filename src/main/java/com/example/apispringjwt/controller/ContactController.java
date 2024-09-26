@@ -1,6 +1,7 @@
 package com.example.apispringjwt.controller;
 
 import com.example.apispringjwt.dto.response.ContactDTO;
+import com.example.apispringjwt.dto.response.SearchUserDTO;
 import com.example.apispringjwt.service.IContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ public class ContactController {
     @GetMapping()
     private ResponseEntity<List<ContactDTO>> getContactOfUserConnected() {
         return ResponseEntity.ok(contactService.getContactOfUserConnected());
+    };
+
+    @GetMapping("/{searchContact}")
+    private ResponseEntity<List<SearchUserDTO>> getContactBySearch(@PathVariable String searchContact) {
+        return ResponseEntity.ok(contactService.getContactSearch(searchContact));
     };
 
     @PutMapping()

@@ -1,6 +1,7 @@
 package com.example.apispringjwt.service.impl;
 
 import com.example.apispringjwt.dto.response.ContactDTO;
+import com.example.apispringjwt.dto.response.SearchUserDTO;
 import com.example.apispringjwt.exeption.ResponseEntityException;
 import com.example.apispringjwt.model.Contact;
 import com.example.apispringjwt.model.User;
@@ -24,6 +25,7 @@ public class ContactService implements IContactService {
     private IContactRepository contactRepository;
     @Autowired
     private IUserRepository userRepository;
+
 
     @Override
     public List<ContactDTO> getContactOfUserConnected() {
@@ -83,6 +85,19 @@ public class ContactService implements IContactService {
                 return;
             }
             throw new ResponseEntityException(HttpStatus.NO_CONTENT, "No contact found with your id");
+    }
+
+    @Override
+    public List<SearchUserDTO> getContactSearch(String searchContact) {
+        if (searchContact == null || searchContact.isEmpty()){
+            throw new ResponseEntityException(HttpStatus.NO_CONTENT, "No User found with your id");
+        }
+
+        List<User> userList  = userRepository.findByEmailStartingWith(searchContact);
+
+        return userList.stream()
+                .map(user -> new SearchUserDTO(user.getId(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 
 }
