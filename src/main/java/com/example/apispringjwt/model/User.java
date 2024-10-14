@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -17,6 +16,9 @@ public class User implements UserDetails {
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     private String password;
 
@@ -40,6 +42,14 @@ public class User implements UserDetails {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
@@ -70,5 +80,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.http.HttpStatus;
 
 @Entity
+@Table(name = "CONTACT")
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
