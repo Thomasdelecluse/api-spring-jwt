@@ -1,5 +1,6 @@
 package com.example.apispringjwt.model;
 
+import com.example.apispringjwt.enumeration.InvitationStatus;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,9 +21,9 @@ public class Invitation {
     private String contactName;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private InvitationStatus status;
 
-    public Invitation(User senderId, String contactEmail, String contactName, String status) {
+    public Invitation(User senderId, String contactEmail, String contactName, InvitationStatus status) {
         this.senderId = senderId;
         this.contactEmail = contactEmail;
         this.contactName = contactName;
@@ -64,11 +65,11 @@ public class Invitation {
         this.contactName = contactName;
     }
 
-    public String getStatus() {
+    public InvitationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(InvitationStatus status) {
         this.status = status;
     }
 
