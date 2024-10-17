@@ -13,22 +13,24 @@ import org.springframework.web.bind.annotation.*;
 public class InvitationController {
     @Autowired
     IInvitationService invitationService;
+
     @PostMapping()
-    private ResponseEntity<?> addContact(@RequestBody InvitationDTO invitationDTO) {
+    private ResponseEntity<?> addInvitation(@RequestBody InvitationDTO invitationDTO) {
         invitationService.addInvitation(invitationDTO);
         return ResponseEntity.ok().build();
     };
 
- //  @PostMapping()
- //  private ResponseEntity<?> acceptContact(@RequestBody ContactDTO contactDTO) {
- //      contactService.updateContact(contactDTO);
- //      return ResponseEntity.ok().build();
- //  };
+    @PostMapping("/{invitationId}")
+    private ResponseEntity<?> acceptInvitation(@PathVariable  int invitationId)  {
+        invitationService.acceptInvitation(invitationId);
+        return ResponseEntity.ok().build();
+    };
 
- //  @PostMapping()
- //  private ResponseEntity<?> refuseContact(@RequestBody ContactDTO contactDTO) {
- //      contactService.updateContact(contactDTO);
- //      return ResponseEntity.ok().build();
- //  };
+
+  // @PostMapping()
+  // private ResponseEntity<?> refuseContact(@RequestBody InvitationDTO invitationDTO) {
+  //     invitationService.refuseInvitation(invitationDTO);
+  //     return ResponseEntity.ok().build();
+  // };
 
 }
