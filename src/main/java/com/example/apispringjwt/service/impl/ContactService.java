@@ -35,13 +35,26 @@ public class ContactService implements IContactService {
             if (!contacts.isEmpty()) {
                 try {
                     return contacts.stream()
-                            .map(contact -> new ContactDTO(
-                                    contact.getId(),
-                                    contact.getContactEmail(),
-                                    contact.getTelephone(),
-                                    contact.getContactName(),
-                                    contact.getImage() != null ? Base64.getEncoder().encodeToString(contact.getImage()) : null
-                            ))
+                            .map(contact -> {
+                                String imageBase64;
+
+                                if (contact.getImage() != null) {
+                                    imageBase64 = Base64.getEncoder().encodeToString(contact.getImage());
+                                } else {
+                                    Optional<User> userOpt = userRepository.findById(contact.getUserId().getId());
+                                    imageBase64 = userOpt.map(user ->
+                                            user.getImage() != null ? Base64.getEncoder().encodeToString(user.getImage()) : null
+                                    ).orElse(null);
+                                }
+
+                                return new ContactDTO(
+                                        contact.getId(),
+                                        contact.getContactEmail(),
+                                        contact.getTelephone(),
+                                        contact.getContactName(),
+                                        imageBase64
+                                );
+                            })
                             .collect(Collectors.toList());
                 } catch (Exception e) {
                     throw new ResponseEntityException(HttpStatus.INTERNAL_SERVER_ERROR, "Error getting contact list");
